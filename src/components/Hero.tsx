@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://picsum.photos/id/431/1920/1080" 
+          src="https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&w=1920&q=80" 
           alt="Cafe Interior" 
           className="w-full h-full object-cover"
         />

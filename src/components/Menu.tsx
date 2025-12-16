@@ -1,10 +1,35 @@
 import React, { useState } from 'react';
 import { MENU_DATA } from '../constants';
+import { UtensilsCrossed } from 'lucide-react';
 
 const Menu: React.FC = () => {
   const [activeTab, setActiveTab] = useState(MENU_DATA[0].id);
 
   const activeCategory = MENU_DATA.find(cat => cat.id === activeTab);
+
+  // Helper to handle image errors
+  const ImageWithFallback = ({ src, alt, className }: { src?: string, alt: string, className?: string }) => {
+    const [error, setError] = useState(false);
+
+    if (error || !src) {
+      return (
+        <div className="hidden sm:flex flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-xl bg-haus-cream items-center justify-center text-haus-gold/30">
+          <UtensilsCrossed size={32} />
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden shadow-sm">
+        <img 
+          src={src} 
+          alt={alt} 
+          onError={() => setError(true)}
+          className={`${className} w-full h-full object-cover transition-transform duration-500`}
+        />
+      </div>
+    );
+  };
 
   return (
     <section id="menu" className="py-20 bg-white">
@@ -38,17 +63,12 @@ const Menu: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
           {activeCategory?.items.map((item, index) => (
             <div key={index} className="flex gap-4 group">
-              {item.image ? (
-                <div className="flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden shadow-sm">
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-              ) : (
-                <div className="hidden sm:block flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-xl bg-gray-100"></div>
-              )}
+              <ImageWithFallback 
+                src={item.image} 
+                alt={item.name} 
+                className="group-hover:scale-110" 
+              />
+              
               <div className="flex-grow">
                 <div className="flex justify-between items-baseline mb-1">
                   <h3 className="font-bold text-lg text-haus-black group-hover:text-haus-gold transition-colors">
